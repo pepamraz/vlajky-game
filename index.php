@@ -17,15 +17,15 @@
     $zapsane_staty = [];
 
     $kliknuto = isset($_GET["kliknuto"]) ? $_GET["kliknuto"] : null;
-    $spravne = isset($_GET["spravne"]) ? $_GET["spravne"] : null;
+    $spravne = isset($_SESSION["spravne"]) ? $_SESSION["spravne"] : null;
 
     $uhadnute = isset($_SESSION["uhadnute"]) ? $_SESSION["uhadnute"] : 0;
     $pokusy = isset($_SESSION["pokusy"]) ? $_SESSION["pokusy"] : 0;
 
-    $maximalni_pocet_pokusu = 10;
+    $maximalni_pocet_pokusu = 5;
     if($pokusy>=$maximalni_pocet_pokusu){
         echo("<p>Z $maximalni_pocet_pokusu si měl správně $uhadnute</p>");
-        echo("<a href='/Mraz/' class='btn btn-primary'>Hrát znovu</a>");
+        echo("<a href='/' class='btn btn-primary'>Hrát znovu</a>");
         session_destroy();
         die();
     }
@@ -35,11 +35,11 @@
         $pokusy++;
     }
 
-    if (isset($_GET["spravne"])) {
-        $spravne = $_GET["spravne"];
+    if (isset($_SESSION["spravne"])) {
+        $spravne = $_SESSION["spravne"];
     }
 
-    if ($spravne != null) {
+    if ($spravne != null && $kliknuto!=null) {
         if ($spravne === $kliknuto) {
             echo ("<p class='text-success'>Uhádl si!</p>");
             $uhadnute++;
@@ -62,10 +62,12 @@
         $cislo_vybraneho_statu = random_int(0, count($staty) - 1);
         $spravne_id = $staty[$cislo_vybraneho_statu]->id;
 
-        echo ("<img src='/Mraz/vlajky/" . $staty[$cislo_vybraneho_statu]->obrazek . ".png' width='360'>");
+        $_SESSION["spravne"] = $spravne_id;
+
+        echo ("<img src='/vlajky/" . $staty[$cislo_vybraneho_statu]->obrazek . ".png' width='360'>");
         echo ("<div class='mt-1 d-flex gap-3'>");
         for ($i = 0; $i < count($staty); $i++) {
-            echo ("<a class='btn btn-primary' href='/Mraz/?kliknuto=" . $staty[$i]->id . "&spravne=" . $spravne_id . "'>" . $staty[$i]->stat . "</a>");
+            echo ("<a class='btn btn-primary' href='/?kliknuto=" . $staty[$i]->id . "'>" . $staty[$i]->stat . "</a>");
         }
         echo ("</div>");
     }
