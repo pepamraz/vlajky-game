@@ -1,7 +1,7 @@
 # Vlajky
 Projekt do školy do předmětu "Programování Webových Aplikací"
 
-Hra je hratelná, ale není plně dokončená
+Hra je hratelná
 
 ## PHP
 Hra na hádání vlajek
